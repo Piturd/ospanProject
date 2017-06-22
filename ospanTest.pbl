@@ -59,8 +59,8 @@ define Start(param)
 	#Stop(noWordsTrack)
 	#PausePlayback(noWordsTrack)
 	
-	#gResultsFile <- FileOpenAppend("results/" + gSubNum + ".csv");
-	#FilePrint(gFileOut, "")
+	gResultsFile <- FileOpenAppend("results/" + gSubNum + ".csv");
+	FilePrint(gResultsFile, "Correct answers;Total;Percent")
 	
 	iLable <- MakeLabel("Welcome", lFont)
 	Move(iLable, gWidth/2, 50)
@@ -166,6 +166,7 @@ define Outro(param){
 #}
 define ExecuteTest(iterator)
 {
+	gcorrectAnswCount <- 0
 	while (iterator <= 5)
 	{
 		#sound <- LoadSound("noWords.wav")
@@ -194,6 +195,7 @@ define ExecuteTest(iterator)
 
 			if(answer == rightAnswer){
 				iLable2 <- MakeLabel("Correct", gCorrectFont)
+				gcorrectAnswCount <- gcorrectAnswCount + 1
 				
 			}else{
 				iLable2 <- MakeLabel("WRONG", gErrorFont)
@@ -211,6 +213,7 @@ define ExecuteTest(iterator)
 			iterator<- 99999
 		}
 	}
+		FilePrint(gResultsFile, gcorrectAnswCount + ";5;" + ((gcorrectAnswCount/5)*100))
 }
 
 define DrawAndWait(object, window, time)
